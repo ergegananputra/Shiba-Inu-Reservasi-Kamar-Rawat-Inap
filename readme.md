@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- Python 3.6+
+- Python 3.12
 - pip
 - virtualenv
 
@@ -45,8 +45,15 @@ These instructions will get you a copy of the project up and running on your loc
     ```
 6. Import interoperabilitas.sql to MySQL database!
 
+## How To Run
+1. Make sure the venv activated, then run this script
+    ```bash
+    fastapi dev main.py
+    ```
 
-
+## See Also 
+Fast API Documentation:
+https://fastapi.tiangolo.com/
 
 ## License
 
