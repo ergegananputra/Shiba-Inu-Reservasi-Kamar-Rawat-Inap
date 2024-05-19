@@ -7,12 +7,20 @@ from sqlalchemy.orm import Session
 from schemas import room_schemas as schemas
 from crud import crud
 
+import logging
 app = FastAPI()
+
+logging.basicConfig(level=logging.INFO)
+
+@app.exception_handler(Exception)
+async def exception_handler(request, exc):
+    logging.error(f"An error occurred: {exc}")
+    return {"message": "Internal Server Error"}, 500
 
 try:
     DBServerWrites.Base.metadata.create_all(bind=DBServerWrites.engine)
 except Exception as e:
-    print(e)
+    logging.error(f"An error occurred when creating the database tables: {e}")
 
 #Dependency
 def get_db():
@@ -42,7 +50,7 @@ async def get_fasilitas_layanan_kesehatan(skip: int = 0, limit: int = 100, db : 
 async def get_fasilitas_layanan_kesehatan(
     facility_id: str, 
     db: Session = Depends(get_db)
-    ) -> schemas.FasilitasLayananKesehatan :
+    ):
     facility = crud.get_fasilitas_layanan_kesehatan(db, facility_id)
     return facility
 
@@ -50,5 +58,8 @@ async def get_fasilitas_layanan_kesehatan(
 async def create_fasilitas_layanan_kesehatan(
     facility: schemas.FasilitasLayananKesehatanCreate, 
     db: Session = Depends(get_db)
-    ) -> schemas.FasilitasLayananKesehatan :
+    ) :
+    db_facility = crud.get_fasilitas_layanan_kesehatan_by_name(db, facility.nama)
+    if db_facility:
+        raise HTTPException(status_code=400, detail="Facility already registered")
     return crud.create_fasilitas_layanan_kesehatan(db, facility)

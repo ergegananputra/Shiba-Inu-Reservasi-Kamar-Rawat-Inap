@@ -12,7 +12,7 @@ import uuid
 
 from database.database import DBServerWrites
 
-class FailitasLayananKesehatan(DBServerWrites.Base):
+class FasilitasLayananKesehatan(DBServerWrites.Base):
     __tablename__ = "fasilitas_layanan_kesehatan"
 
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
