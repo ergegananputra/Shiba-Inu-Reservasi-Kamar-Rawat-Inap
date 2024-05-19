@@ -1,49 +1,58 @@
-# Flask API
-
-This is a Flask API for managing health data.
-
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-- Python 3.12
+- Python 3.9 or higher (Recomendation 3.12)
 - pip
-- virtualenv
+- venv (comes with Python 3.3 and above)
+- XAMPP
 
 ### Setting Up
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/ergegananputra/Flask-Basic-CRUD.git
+    git clone https://github.com/ergegananputra/Shiba-Inu-Reservasi-Kamar-Rawat-Inap.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd Flask-Basic-CRUD
+    cd Shiba-Inu-Reservasi-Kamar-Rawat-Inap
     ```
 
 3. Create a virtual environment:
     ```bash
-    python -m venv venv
+    python -m venv .venv
     ```
 
 4. Activate the virtual environment:
     - On Windows:
         ```bash
-        .\venv\Scripts\activate
+        .\.venv\Scripts\activate
         ```
     - On Unix or MacOS:
         ```bash
-        source venv/bin/activate
+        source .venv/bin/activate
         ```
 
 5. Install the required packages:
     ```bash
     pip install -r requirements.txt
     ```
-6. Import interoperabilitas.sql to MySQL database!
+
+6. Run the application:
+    Turn on XAMPP
+
+    ```bash
+    uvicorn main:app --reload
+    ```
+    or
+    ```bash
+    fastapi dev main.py
+    ```
+
+Now, you should be able to access the API at `http://localhost:8000`.
 
 ## How To Run
 1. Make sure the venv activated, then run this script
@@ -54,7 +63,5 @@ These instructions will get you a copy of the project up and running on your loc
 ## See Also 
 Fast API Documentation:
 https://fastapi.tiangolo.com/
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+https://fastapi.tiangolo.com/tutorial/sql-databases/#__tabbed_3_1
+https://docs.pydantic.dev/latest/api/config/#pydantic.config.ConfigDict.extra
