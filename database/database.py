@@ -38,3 +38,17 @@ DBServerReads = Database(
     )
 
 
+def get_db_reads():
+    db = DBServerReads.SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def get_db_writes():
+    db = DBServerWrites.SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+

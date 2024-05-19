@@ -11,16 +11,3 @@ import uuid
 class Timestamps():
     create_at: Optional[datetime] = None
     update_at: Optional[datetime] = None
-
-class FasilitasLayananKesehatanBase(BaseModel, Timestamps):
-    nama: str
-    alamat: str
-
-class FasilitasLayananKesehatanCreate(FasilitasLayananKesehatanBase):
-    pass
-
-class FasilitasLayananKesehatan(FasilitasLayananKesehatanBase):
-    id: Optional[uuid.UUID] = None
-
-    class Config:
-        from_attributes = True

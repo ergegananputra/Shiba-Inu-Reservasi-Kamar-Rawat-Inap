@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
-
-import models.room_models as models
-import schemas.room_schemas as schemas
 from uuid import UUID
+import models.fasilitas_layanan_kesehatan as models
+import schemas.fasilitas_layanan_kesehatan as schemas
+
 
 def get_fasilitas_layanan_kesehatan(db: Session, fasilitas_layanan_kesehatan_id: UUID):
     return db.query(models.FasilitasLayananKesehatan) \
@@ -47,6 +47,3 @@ def delete_fasilitas_layanan_kesehatan(db: Session, fasilitas_layanan_kesehatan_
     db.delete(db_fasilitas_layanan_kesehatan)
     db.commit()
     return db_fasilitas_layanan_kesehatan
-
-
-
