@@ -2,6 +2,7 @@ from fastapi import Depends, FastAPI
 from database.database import DBServerWrites
 
 from api.v1.fasilitas_layanan_kesehatan import router as api_flk
+from api.v1.jenis_tempat_tidur import router as api_jtt
 
 import logging
 app = FastAPI()
@@ -32,3 +33,4 @@ async def read_root():
 
 
 app.include_router(api_flk)
+app.include_router(api_jtt)
