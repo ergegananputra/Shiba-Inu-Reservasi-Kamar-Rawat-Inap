@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 21, 2024 at 02:40 AM
+-- Generation Time: May 21, 2024 at 04:48 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `fasilitas_layanan_kesehatan` (
-  `id` char(36) NOT NULL DEFAULT uuid() UNIQUE,
+  `id` char(36) NOT NULL DEFAULT uuid(),
   `nama` varchar(255) DEFAULT NULL,
   `alamat` varchar(255) DEFAULT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -51,7 +51,7 @@ INSERT INTO `fasilitas_layanan_kesehatan` (`id`, `nama`, `alamat`, `create_at`, 
 --
 
 CREATE TABLE `jenis_tempat_tidur` (
-  `id` char(36) NOT NULL DEFAULT uuid() UNIQUE,
+  `id` char(36) NOT NULL DEFAULT uuid(),
   `jenis_tempat_tidur` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -67,6 +67,28 @@ INSERT INTO `jenis_tempat_tidur` (`id`, `jenis_tempat_tidur`, `keterangan`, `cre
 ('b9f4dfc363a84534961aa82957699202', 'Single', 'Satu ranjang', '2024-05-20 15:17:13', '2024-05-20 15:17:13'),
 ('de3744c5586a4a4195448d2347ed1a9c', 'Bunk', 'Ranjang bertingkat updated', '2024-05-20 16:32:48', '2024-05-20 16:33:43');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `status_kamar`
+--
+
+CREATE TABLE `status_kamar` (
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `status` varchar(255) DEFAULT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `status_kamar`
+--
+
+INSERT INTO `status_kamar` (`id`, `status`, `create_at`, `update_at`) VALUES
+('2f5c201d1bd4487db722f84027465c35', 'Tersedia', '2024-05-21 02:46:10', '2024-05-21 02:46:10'),
+('8f59627643824d6b83a98e9bca2a3bcd', 'Penuh', '2024-05-21 02:46:20', '2024-05-21 02:46:20'),
+('fe76f7a01ca5403dac6101e49d0f6302', 'Perbaikan', '2024-05-21 02:46:35', '2024-05-21 02:46:35');
+
 --
 -- Indexes for dumped tables
 --
@@ -75,13 +97,19 @@ INSERT INTO `jenis_tempat_tidur` (`id`, `jenis_tempat_tidur`, `keterangan`, `cre
 -- Indexes for table `fasilitas_layanan_kesehatan`
 --
 ALTER TABLE `fasilitas_layanan_kesehatan`
-  ADD PRIMARY KEY (`id`);
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `jenis_tempat_tidur`
 --
 ALTER TABLE `jenis_tempat_tidur`
-  ADD PRIMARY KEY (`id`);
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `status_kamar`
+--
+ALTER TABLE `status_kamar`
+  ADD UNIQUE KEY `id` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
