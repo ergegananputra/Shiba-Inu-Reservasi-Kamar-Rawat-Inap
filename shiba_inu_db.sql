@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `fasilitas_layanan_kesehatan` (
-  `id` char(36) NOT NULL DEFAULT uuid(),
+  `id` char(36) NOT NULL DEFAULT uuid() UNIQUE,
   `nama` varchar(255) DEFAULT NULL,
   `alamat` varchar(255) DEFAULT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -51,7 +51,7 @@ INSERT INTO `fasilitas_layanan_kesehatan` (`id`, `nama`, `alamat`, `create_at`, 
 --
 
 CREATE TABLE `jenis_tempat_tidur` (
-  `id` char(36) NOT NULL DEFAULT uuid(),
+  `id` char(36) NOT NULL DEFAULT uuid() UNIQUE,
   `jenis_tempat_tidur` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
