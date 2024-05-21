@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 21, 2024 at 04:48 AM
+-- Generation Time: May 21, 2024 at 10:18 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -70,6 +70,27 @@ INSERT INTO `jenis_tempat_tidur` (`id`, `jenis_tempat_tidur`, `keterangan`, `cre
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pendingin_ruangan`
+--
+
+CREATE TABLE `pendingin_ruangan` (
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `nama` varchar(255) DEFAULT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pendingin_ruangan`
+--
+
+INSERT INTO `pendingin_ruangan` (`id`, `nama`, `create_at`, `update_at`) VALUES
+('0567a8ff61cc42038a00d7203c82608e', 'Kipas angin', '2024-05-21 08:16:25', '2024-05-21 08:16:25'),
+('62866c0b9afa4993b6ee0767ba62a406', 'AC', '2024-05-21 07:19:17', '2024-05-21 08:16:04');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `status_kamar`
 --
 
@@ -103,6 +124,12 @@ ALTER TABLE `fasilitas_layanan_kesehatan`
 -- Indexes for table `jenis_tempat_tidur`
 --
 ALTER TABLE `jenis_tempat_tidur`
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `pendingin_ruangan`
+--
+ALTER TABLE `pendingin_ruangan`
   ADD UNIQUE KEY `id` (`id`);
 
 --
