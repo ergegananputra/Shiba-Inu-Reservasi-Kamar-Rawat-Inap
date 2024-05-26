@@ -22,14 +22,11 @@ async def get_fleet_kamar(
     fleet = crud.get_fleet_kamar(db, fleet_kamar_id)
     return fleet
 
-@router.post("/api/v1/fleet/", response_model=list[schemas.FleetKamar])
+@router.post("/api/v1/fleet/", response_model=schemas.FleetKamar)
 async def create_fleet_kamar(
     fleet_kamar: schemas.FleetKamarCreate,
     db: Session = Depends(get_db_writes)
     ) :
-    db_fleet_kamar = crud.get_fleet_kamar_by_jenis_kamar(db, fleet_kamar.jenis_kamar)
-    if db_fleet_kamar:
-        raise HTTPException(status_code=400, detail="Fleet already registered")
     return crud.create_fleet_kamar(db, fleet_kamar)
 
 @router.put("/api/v1/fleet/{fleet_id}", response_model=list[schemas.FleetKamar])

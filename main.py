@@ -8,7 +8,7 @@ from api.v1.status_kamar import router as api_sk
 from api.v1.pendingin_ruangan import router as api_pr
 from api.v1.kasur import router as api_kasur
 from api.v1.main_advanced import router as api_main
-
+from api.v1.fasilitas_detail_kamar import router as api_fdk
 
 import logging
 app = FastAPI()
@@ -45,4 +45,4 @@ app.include_router(api_sk)
 app.include_router(api_pr)
 app.include_router(api_kasur)
 app.include_router(api_main)
-
+app.include_router(api_fdk)

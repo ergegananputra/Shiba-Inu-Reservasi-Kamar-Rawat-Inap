@@ -1,6 +1,7 @@
 from schemas.room_schemas import *
 
 class FasilitasDetailKamarBase(BaseModel, Timestamps):
+    fk_fpr: uuid.UUID
     kamar_mandi: int
     tabung_oksigen: int
     infus: int
@@ -16,12 +17,10 @@ class FasilitasDetailKamarBase(BaseModel, Timestamps):
     wastafel: int
 
 class FasilitasDetailKamarCreate(FasilitasDetailKamarBase):
-    fk_fpr: uuid.UUID
     pass
 
 class FasilitasDetailKamar(FasilitasDetailKamarBase):
     id: Optional[uuid.UUID] = None
-    fk_fpr: uuid.UUID
 
     class Config:
         from_attributes = True

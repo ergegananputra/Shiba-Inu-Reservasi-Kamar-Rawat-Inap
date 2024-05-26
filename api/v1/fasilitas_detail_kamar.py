@@ -27,9 +27,6 @@ async def create_fasilitas_detail_kamar(
     details: schemas.FasilitasDetailKamar,
     db: Session = Depends(get_db_writes)
     ) :
-    db_details = crud.get_fasilitas_detail_kamar(db, details.nama)
-    if db_details:
-        raise HTTPException(status_code=400, detail="Details already registered")
     return crud.create_fasilitas_detail_kamar(db, details)
 
 @router.put("/api/v1/room-details/{details_id}", response_model=schemas.FasilitasDetailKamar)

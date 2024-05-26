@@ -19,9 +19,6 @@ async def get_kasur(bed_id: str, db: Session= Depends(get_db_reads)):
     return bed
 @router.post("/api/v1/bed/{bed_id}", response_model=schemas.Kasur)
 async def create_kasur(bed: schemas.Kasur, db: Session = Depends(get_db_writes)):
-    db_kasur = crud.get_kasur(db, bed.id)
-    if db_kasur:
-        raise HTTPException(status_code=400, detail="Bed already Registered")
     return crud.create_kasur(db, bed)
 @router.delete("/api/v1/bed/{bed_id}", response_model=schemas.Kasur)
 async def delete_kasur(bed_id: str, db: Session= Depends(get_db_writes)):
