@@ -1,0 +1,23 @@
+# .gitignore
+
+# Ignore Python compiled files
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environment
+venv/
+
+# Ignore IDE-specific files
+.idea/
+.vscode/
+
+# Ignore the database file for SQLite
+*.db
+*.sqlite3
+
+# Ignore log files
+*.log
+
+# Ignore the build directory
+build/
+dist/
