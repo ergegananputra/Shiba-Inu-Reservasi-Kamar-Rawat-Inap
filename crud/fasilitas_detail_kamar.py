@@ -22,9 +22,21 @@ def get_fasilitas_detail_kamar(db: Session, skip: int = 0, limit: int = 100):
 
 def create_fasilitas_detail_kamar(db: Session, fasilitas_detail_kamar: schemas.FasilitasDetailKamar):
     db_fasilitas_detail_kamar = models.FasilitasDetailKamar(
-        nama=fasilitas_detail_kamar.nama,
-        alamat=fasilitas_detail_kamar.alamat
-    )
+        fk_fpr=fasilitas_detail_kamar.fk_fpr,
+        kamar_mandi=fasilitas_detail_kamar.kamar_mandi,
+        tabung_oksigen = fasilitas_detail_kamar.tabung_oksigen,
+        infus = fasilitas_detail_kamar.infus,
+        nurse_call = fasilitas_detail_kamar.nurse_call,
+        kasur_pendamping = fasilitas_detail_kamar.kasur_pendamping,
+        sofa = fasilitas_detail_kamar.sofa,
+        lemari = fasilitas_detail_kamar.lemari,
+        meja_makan_pasien = fasilitas_detail_kamar.meja_makan_pasien,
+        meja_makan_pendamping = fasilitas_detail_kamar.meja_makan_pendamping,
+        televisi = fasilitas_detail_kamar.televisi,
+        dispenser = fasilitas_detail_kamar.dispenser,
+        kulkas = fasilitas_detail_kamar.kulkas,
+        wastafel = fasilitas_detail_kamar.wastafel
+        )
     db.add(db_fasilitas_detail_kamar)
     db.commit()
     db.refresh(db_fasilitas_detail_kamar)

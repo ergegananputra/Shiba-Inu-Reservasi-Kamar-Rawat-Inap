@@ -1,7 +1,7 @@
 from models.room_models import *;
 
-class FasilitasDetailKamar():
-    __table_name__ = "fasilitas_detail_kamar.py"
+class FasilitasDetailKamar(DBServerWrites.Base):
+    __tablename__ = "fasilitas_detail_kamar"
     __table_args__ = {'extend_existing': True}
 
     id = Column(UUIDType(binary=False), primary_key= True, default=uuid.uuid4, unique=True, nullable=False)
@@ -18,7 +18,8 @@ class FasilitasDetailKamar():
     dispenser = Column(Integer, index=True)
     kulkas = Column(Integer, index=True)
     wastafel = Column(Integer, index=True)
-    fk_fpr = Column(UUIDType(index=True), ForeignKey("pendingin_ruangan.id"))
+    fk_fpr = Column(UUIDType(binary=False), ForeignKey("pendingin_ruangan.id"))
+    
     create_at = Column(DateTime, default=func.now())
     update_at = Column(DateTime, default=func.now())
 

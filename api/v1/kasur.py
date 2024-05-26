@@ -6,34 +6,81 @@ from schemas import kasur as schemas
 
 router = APIRouter()
 
-@router.get("/api/v1/bed", response_model=list[schemas.Kasur])
+@router.get("/api/v1/bed", response_model=BaseResponse[List[schemas.Kasur]])
 async def get_kasur(skip: int = 0, limit: int = 100, db: Session= Depends(get_db_reads)):
     beds = crud.get_kasur_all(db, skip=skip, limit=limit)
     if beds is None:
-        raise HTTPException(status_code=404, detail="Beds not found")
-    return beds
+        return BaseResponse(
+            status="404 Not Found",
+            message="Data kasur tidak ditemukan",
+            data=beds
+        )
+    
+    response = BaseResponse(
+        status="200 OK",
+        message="Berhasil mengambil data kasur",
+        data=beds
+    )
 
-@router.get("/api/v1/bed/{bed_id}", response_model=list[schemas.Kasur])
+    return response
+
+@router.get("/api/v1/bed/{bed_id}", response_model=BaseResponse[List[schemas.Kasur]])
 async def get_kasur(bed_id: str, db: Session= Depends(get_db_reads)):
     bed = crud.get_kasur(db, bed_id)
-    return bed
-@router.post("/api/v1/bed/{bed_id}", response_model=schemas.Kasur)
+    if bed is None:
+        return BaseResponse(
+            status="404 Not Found",
+            message="Data kasur tidak ditemukan",
+            data=bed
+        )
+    
+    response = BaseResponse(
+        status="200 OK",
+        message="Berhasil mengambil data kasur",
+        data=bed
+    )
+    return response
+
+@router.post("/api/v1/bed/{bed_id}", response_model=BaseResponse[schemas.Kasur])
 async def create_kasur(bed: schemas.Kasur, db: Session = Depends(get_db_writes)):
-    db_kasur = crud.get_kasur(db, bed.id)
-    if db_kasur:
-        raise HTTPException(status_code=400, detail="Bed already Registered")
-    return crud.create_kasur(db, bed)
-@router.delete("/api/v1/bed/{bed_id}", response_model=schemas.Kasur)
+    response = BaseResponse(
+        status="201 Created",
+        message="Berhasil menambahkan kasur",
+        data=bed
+    )
+    return response
+
+@router.delete("/api/v1/bed/{bed_id}", response_model=BaseResponse[schemas.Kasur])
 async def delete_kasur(bed_id: str, db: Session= Depends(get_db_writes)):
     db_kasur = crud.get_kasur(db, bed_id)
     if db_kasur:
-        raise HTTPException(status_code=404, detail="Bed not found")
-    return crud.delete_kasur(db, bed_id)
+        return BaseResponse(
+            status="404 Not Found",
+            message="Data kasur tidak ditemukan",
+            data=db_kasur
+        )
+    
+    response = BaseResponse(
+        status="200 OK",
+        message="Berhasil menghapus data kasur",
+        data=db_kasur
+    )
 
-@router.put("/api/v1/bed/{bed_id}", response_model=schemas.Kasur)
+    return response
+
+@router.put("/api/v1/bed/{bed_id}", response_model=BaseResponse[schemas.Kasur])
 async def update_kasur(bed_id: str, bed: schemas.Kasur, db: Session = Depends(get_db_writes)):
     db_kasur = crud.get_kasur(db, bed_id)
     if db_kasur is None:
-        raise HTTPException(status_code=404, detail="Bed not found")
+        return BaseResponse(
+            status="404 Not Found",
+            message="Data kasur tidak ditemukan",
+            data=bed
+        )
     bed.id = bed_id
-    return crud.update_kasur(db, bed)
+    response = BaseResponse(
+        status="200 OK",
+        message="Berhasil mengupdate data kasur",
+        data=bed
+    )
+    return response

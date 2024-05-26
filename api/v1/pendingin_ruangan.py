@@ -5,28 +5,61 @@ from schemas import pendingin_ruangan as schemas
 
 router = APIRouter()
 
-@router.get("/api/v1/pendingin-ruang", response_model=list[schemas.PendinginRuangan])
+@router.get("/api/v1/pendingin-ruang", response_model=BaseResponse[List[schemas.PendinginRuangan]])
 async def get_pendingin_ruangan(skip: int = 0, limit: int = 100, db: Session = Depends(get_db_reads)):
     pendingin = crud.get_pendingin_ruangan_all(db, skip=skip, limit=limit)
     if pendingin is None:
-        raise HTTPException(status_code=404, detail="Pendingin Ruangan not found")
-    return pendingin
+        return BaseResponse(
+            status="404 Not Found",
+            message="Pendingin Ruangan not found",
+            data=pendingin
+        )
+    
+    response = BaseResponse(
+        status="200 OK",
+        message="Berhasil mengambil data pendingin ruangan",
+        data=pendingin
+    )
 
-@router.get("/api/v1/pendingin-ruang/{pendingin_ruangan_id}", response_model=schemas.PendinginRuangan)
+    return response
+
+@router.get("/api/v1/pendingin-ruang/{pendingin_ruangan_id}", response_model=BaseResponse[schemas.PendinginRuangan])
 async def get_pendingin_ruangan_detail(pendingin_ruangan_id: str, db: Session = Depends(get_db_reads)):
     pendingin = crud.get_pendingin_ruangan(db, pendingin_ruangan_id)
     if pendingin is None:
-        raise HTTPException(status_code=404, detail="Pendingin Ruangan not found")
-    return pendingin
+        return BaseResponse(
+            status="404 Not Found",
+            message="Pendingin Ruangan not found",
+            data=pendingin
+        )
+    
+    response = BaseResponse(
+        status="200 OK",
+        message="Berhasil mengambil data pendingin ruangan",
+        data=pendingin
+    )
 
-@router.post("/api/v1/pendingin-ruang", response_model=schemas.PendinginRuangan)
+    return response
+
+@router.post("/api/v1/pendingin-ruang", response_model=BaseResponse[schemas.PendinginRuangan])
 async def create_pendingin_ruangan(pendingin_ruangan: schemas.PendinginRuanganCreate, db: Session = Depends(get_db_writes)):
     db_pendingin_ruangan = crud.get_pendingin_ruangan_by_name(db, pendingin_ruangan.nama)
     if db_pendingin_ruangan:
-        raise HTTPException(status_code=400, detail="Pendingin Ruangan already registered")
-    return crud.create_pendingin_ruangan(db, pendingin_ruangan)
+        return BaseResponse(
+            status="400 Bad Request",
+            message="Pendingin Ruangan name already exists",
+            data=db_pendingin_ruangan
+        )
+    
+    response = BaseResponse(
+        status="201 Created",
+        message="Berhasil menambahkan pendingin ruangan",
+        data=crud.create_pendingin_ruangan(db, pendingin_ruangan)
+    )
 
-@router.put("/api/v1/pendingin-ruang/{pendingin_ruangan_id}", response_model=schemas.PendinginRuangan)
+    return response
+
+@router.put("/api/v1/pendingin-ruang/{pendingin_ruangan_id}", response_model=BaseResponse[schemas.PendinginRuangan])
 async def update_pendingin_ruangan(
         pendingin_ruangan_id: str,
         pendingin: schemas.PendinginRuangan,
@@ -34,13 +67,35 @@ async def update_pendingin_ruangan(
     ):
     db_pendingin_ruangan = crud.get_pendingin_ruangan(db, pendingin_ruangan_id)
     if db_pendingin_ruangan is None:
-        raise HTTPException(status_code=404, detail="Pendingin Ruangan name not found")
+        return BaseResponse(
+            status="404 Not Found",
+            message="Pendingin Ruangan not found",
+            data=pendingin
+        )
     pendingin.id = pendingin_ruangan_id
-    return crud.update_pendingin_ruangan(db, pendingin)
 
-@router.delete("/api/v1/pendingin-ruang/{pendingin_ruangan_id}", response_model=schemas.PendinginRuangan)
+    response = BaseResponse(
+        status="200 OK",
+        message="Berhasil mengupdate data pendingin ruangan",
+        data=pendingin
+    )
+
+    return response
+
+@router.delete("/api/v1/pendingin-ruang/{pendingin_ruangan_id}", response_model=BaseResponse[schemas.PendinginRuangan])
 async def delete_pendingin_ruangan(pendingin_ruangan_id: str, db: Session = Depends(get_db_writes)):
     db_pendingin_ruangan = crud.get_pendingin_ruangan(db, pendingin_ruangan_id)
     if db_pendingin_ruangan is None:
-        raise HTTPException(status_code=404, detail="Pendingin Ruangan name not found")
-    return crud.delete_pendingin_ruangan(db, pendingin_ruangan_id)
+        return BaseResponse(
+            status="404 Not Found",
+            message="Pendingin Ruangan not found",
+            data=db_pendingin_ruangan
+        )
+    
+    response = BaseResponse(
+        status="200 OK",
+        message="Berhasil menghapus data pendingin ruangan",
+        data=db_pendingin_ruangan
+    )
+
+    return response
