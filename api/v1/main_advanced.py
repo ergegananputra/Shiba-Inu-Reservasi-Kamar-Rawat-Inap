@@ -28,7 +28,7 @@ async def get_all_advanced(skip: int = 0, limit: int = 100, db : Session= Depend
 }
 '''
 
-@router.get("/api/v1/advanced/search")
+@router.post("/api/v1/advanced/search")
 async def search_advanced(
         request: schemas.SearchAdvancedRequest,
         db : Session= Depends(get_db_reads)

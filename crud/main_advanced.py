@@ -40,6 +40,8 @@ def advanced_search(
             "fleet_kamar.nama", "fleet_kamar.jenis_kamar",
             "fasilitas_layanan_kesehatan.nama", "fasilitas_layanan_kesehatan.alamat",
             ]
+    elif len(fields) == 1:
+        fields = [f"{__attributes_map[table]}.{field}" for table, field in [item.split(".")[:2] for item in fields if item != ""]]
 
     field_convertion = lambda table, field: f"{__attributes_map[table]}.{field}" if table in __attributes_map else ""
 
@@ -47,17 +49,15 @@ def advanced_search(
     where_clause = " OR ".join([item_spesific(*item.split(".")[:2]) for item in fields if item != ""])
 
     select_clause = ", ".join([field_convertion(*item.split(".")[:2]) for item in select if item != ""]) if select != ["*"] else "*"
+    
+    if len(select) == 1:
+        select_clause = f"{field_convertion(*select[0].split(".")[:2])}"
 
     sql = text(
         f"""
         SELECT {select_clause}
-        FROM kasur as k
-        JOIN fleet_kamar as fkr ON k.fk_fkr = fkr.id
-        JOIN fasilitas_layanan_kesehatan as flk ON fkr.fk_flk = flk.id
-        JOIN status_kamar as sk ON k.fk_sk = sk.id
-        JOIN jenis_tempat_tidur as jtt ON k.fk_jtt = jtt.id
-        JOIN fasilitas_detail_kamar as fdk ON k.kasur_id = fdk.id
-        JOIN pendingin_ruangan as fpr ON fdk.fk_fpr = fpr.id
+        FROM jenis_tempat_tidur as jtt
+        
         WHERE {where_clause}
         ORDER BY :fields :sort
         LIMIT :limit OFFSET :offset
