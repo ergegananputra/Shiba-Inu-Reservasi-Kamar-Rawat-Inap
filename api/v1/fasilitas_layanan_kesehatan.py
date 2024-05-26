@@ -8,7 +8,6 @@ from schemas import fasilitas_layanan_kesehatan as schemas
 router = APIRouter()
 
 
-# @router.get("/api/v1/facility", response_model=list[schemas.FasilitasLayananKesehatan])
 @router.get("/api/v1/facility", response_model=BaseResponse[List[schemas.FasilitasLayananKesehatan]])
 async def get_fasilitas_layanan_kesehatan(skip: int = 0, limit: int = 100, db : Session= Depends(get_db_reads)):
     facilities = crud.get_fasilitas_layanan_kesehatan_all(db, skip=skip, limit=limit)
@@ -20,7 +19,8 @@ async def get_fasilitas_layanan_kesehatan(skip: int = 0, limit: int = 100, db : 
         )
 
     if facilities is None:
-        raise HTTPException(status_code=404, detail="Facility not found")
+        response.status = "404 Not Found"
+        response.message = "Data fasilitas layanan kesehatan tidak ditemukan"
     return response
 
 @router.get("/api/v1/facility/{facility_id}", response_model=BaseResponse[List[schemas.FasilitasLayananKesehatan]])
@@ -45,7 +45,10 @@ async def create_fasilitas_layanan_kesehatan(
     ) :
     db_facility = crud.get_fasilitas_layanan_kesehatan_by_name(db, facility.nama)
     if db_facility:
-        raise HTTPException(status_code=400, detail="Facility already registered")
+        response = BaseResponse(
+            status="400 Bad Request",
+            message="Fasilitas layanan kesehatan sudah ada"
+        )
     
     response = BaseResponse(
         status="201 Created",
