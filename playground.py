@@ -1,12 +1,3 @@
-from sqlalchemy.orm import Session, joinedload
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import text
-from uuid import UUID
-# import models.fasilitas_layanan_kesehatan as models
-import schemas.main_advanced as schemas
-
-from utils.logger import logger
-
 __attributes_map : dict[str, str] = {
     "kasur": "k",
     "fleet_kamar": "fkr",
@@ -19,13 +10,9 @@ __attributes_map : dict[str, str] = {
 }
 
 def advanced_search(
-        db: Session, 
-        keyword: str, 
         fields: list[str], 
         select: list[str], 
-        limit: int, 
-        page: int, 
-        sort: str
+        sort: str = "asc"
         ) :
     '''
     Advanced search function
@@ -47,12 +34,10 @@ def advanced_search(
     where_clause = " OR ".join([item_spesific(*item.split(".")[:2]) for item in fields if item != ""])
 
     select_clause = ", ".join([field_convertion(*item.split(".")[:2]) for item in select if item != ""]) if select != ["*"] else "*"
-    select_clause = select_clause if select_clause != "" else "*"
-
+  
     order_by_clause = ', '.join(f"{field_convertion(*field.split("."))} {sort}" for field in fields)
 
-    sql = text(
-        f"""
+    sql = f"""
         SELECT {select_clause}
         FROM kasur as k
         JOIN fleet_kamar as fkr ON k.fk_fkr = fkr.id
@@ -65,25 +50,12 @@ def advanced_search(
         ORDER BY {order_by_clause}
         LIMIT :limit OFFSET :offset
         """
-    )
-
-    try:
-        result = db.execute(sql, {
-            "keyword": f"%{keyword}%",
-            "limit": limit,
-            "offset": (page - 1) * limit
-        })
-
-        
-    except SQLAlchemyError as e:
-        logger.error(f"SQLAlchemyError while executing advanced search: {e} \n\nSQL: {sql}")
-        result = None
-
-        return result
     
-    column_names = result.keys()
-    rows = result.fetchall()
+    print(sql)
+    
 
-    dict_rows = [dict(zip(column_names, row)) for row in rows]
-
-    return dict_rows
+if __name__ == "__main__":
+    advanced_search(
+        fields=["kasur.kode_kamar", "fleet_kamar.nama"],
+        select=["kasur.kode_kamar", "fleet_kamar.nama"]
+    )
