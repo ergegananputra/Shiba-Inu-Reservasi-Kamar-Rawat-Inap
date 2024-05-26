@@ -13,7 +13,7 @@ __attributes_map : dict[str, str] = {
     "fasilitas_layanan_kesehatan": "flk",
     "status_kamar": "sk",
     "jenis_tempat_tidur": "jtt",
-    "fasilitas_detail_kamar.py": "fdk",
+    "fasilitas_detail_kamar": "fdk",
     "pendingin_ruangan": "fpr"
 
 }
@@ -56,7 +56,7 @@ def advanced_search(
         JOIN fasilitas_layanan_kesehatan as flk ON fkr.fk_flk = flk.id
         JOIN status_kamar as sk ON k.fk_sk = sk.id
         JOIN jenis_tempat_tidur as jtt ON k.fk_jtt = jtt.id
-        JOIN fasilitas_detail_kamar.py as fdk ON k.kasur_id = fdk.id
+        JOIN fasilitas_detail_kamar as fdk ON k.kasur_id = fdk.id
         JOIN pendingin_ruangan as fpr ON fdk.fk_fpr = fpr.id
         WHERE {where_clause}
         ORDER BY :fields :sort
