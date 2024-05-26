@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 25, 2024 at 12:01 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Host: localhost:3306
+-- Waktu pembuatan: 26 Bulan Mei 2024 pada 11.48
+-- Versi server: 10.4.27-MariaDB
+-- Versi PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,33 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fasilitas_layanan_kesehatan`
+-- Struktur dari tabel `fasilitas_detail_kamar`
+--
+
+CREATE TABLE `fasilitas_detail_kamar` (
+  `id` char(36) NOT NULL DEFAULT 'uuid()',
+  `fk__fpr` char(36) NOT NULL DEFAULT 'uuid()',
+  `tabung_oksigen` int(11) DEFAULT NULL,
+  `kamar_mandi` int(11) DEFAULT NULL,
+  `infus` int(11) DEFAULT NULL,
+  `nurse_call` int(11) DEFAULT NULL,
+  `kasur_pendamping` int(11) DEFAULT NULL,
+  `sofa` int(11) DEFAULT NULL,
+  `lemari` int(11) DEFAULT NULL,
+  `meja_makan_pasien` int(11) DEFAULT NULL,
+  `meja_makan_pendamping` int(11) DEFAULT NULL,
+  `televisi` int(11) DEFAULT NULL,
+  `dispenser` int(11) DEFAULT NULL,
+  `kulkas` int(11) DEFAULT NULL,
+  `wastafel` int(11) DEFAULT NULL,
+  `create_at` timestamp NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `fasilitas_layanan_kesehatan`
 --
 
 CREATE TABLE `fasilitas_layanan_kesehatan` (
@@ -36,7 +62,7 @@ CREATE TABLE `fasilitas_layanan_kesehatan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `fasilitas_layanan_kesehatan`
+-- Dumping data untuk tabel `fasilitas_layanan_kesehatan`
 --
 
 INSERT INTO `fasilitas_layanan_kesehatan` (`id`, `nama`, `alamat`, `create_at`, `update_at`) VALUES
@@ -47,7 +73,7 @@ INSERT INTO `fasilitas_layanan_kesehatan` (`id`, `nama`, `alamat`, `create_at`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fleet_kamar`
+-- Struktur dari tabel `fleet_kamar`
 --
 
 CREATE TABLE `fleet_kamar` (
@@ -61,7 +87,7 @@ CREATE TABLE `fleet_kamar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `fleet_kamar`
+-- Dumping data untuk tabel `fleet_kamar`
 --
 
 INSERT INTO `fleet_kamar` (`id`, `fk_flk`, `nama`, `jenis_kamar`, `informasi_pembayaran`, `create_at`, `update_at`) VALUES
@@ -72,7 +98,7 @@ INSERT INTO `fleet_kamar` (`id`, `fk_flk`, `nama`, `jenis_kamar`, `informasi_pem
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jenis_tempat_tidur`
+-- Struktur dari tabel `jenis_tempat_tidur`
 --
 
 CREATE TABLE `jenis_tempat_tidur` (
@@ -84,7 +110,7 @@ CREATE TABLE `jenis_tempat_tidur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `jenis_tempat_tidur`
+-- Dumping data untuk tabel `jenis_tempat_tidur`
 --
 
 INSERT INTO `jenis_tempat_tidur` (`id`, `jenis_tempat_tidur`, `keterangan`, `create_at`, `update_at`) VALUES
@@ -95,7 +121,7 @@ INSERT INTO `jenis_tempat_tidur` (`id`, `jenis_tempat_tidur`, `keterangan`, `cre
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pendingin_ruangan`
+-- Struktur dari tabel `pendingin_ruangan`
 --
 
 CREATE TABLE `pendingin_ruangan` (
@@ -106,7 +132,7 @@ CREATE TABLE `pendingin_ruangan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `pendingin_ruangan`
+-- Dumping data untuk tabel `pendingin_ruangan`
 --
 
 INSERT INTO `pendingin_ruangan` (`id`, `nama`, `create_at`, `update_at`) VALUES
@@ -116,7 +142,7 @@ INSERT INTO `pendingin_ruangan` (`id`, `nama`, `create_at`, `update_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `status_kamar`
+-- Struktur dari tabel `status_kamar`
 --
 
 CREATE TABLE `status_kamar` (
@@ -127,7 +153,7 @@ CREATE TABLE `status_kamar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `status_kamar`
+-- Dumping data untuk tabel `status_kamar`
 --
 
 INSERT INTO `status_kamar` (`id`, `status`, `create_at`, `update_at`) VALUES
@@ -140,43 +166,50 @@ INSERT INTO `status_kamar` (`id`, `status`, `create_at`, `update_at`) VALUES
 --
 
 --
--- Indexes for table `fasilitas_layanan_kesehatan`
+-- Indeks untuk tabel `fasilitas_detail_kamar`
+--
+ALTER TABLE `fasilitas_detail_kamar`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `fk_fpr` (`fk__fpr`);
+
+--
+-- Indeks untuk tabel `fasilitas_layanan_kesehatan`
 --
 ALTER TABLE `fasilitas_layanan_kesehatan`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indexes for table `fleet_kamar`
+-- Indeks untuk tabel `fleet_kamar`
 --
 ALTER TABLE `fleet_kamar`
   ADD UNIQUE KEY `id` (`id`),
   ADD KEY `fk_flk` (`fk_flk`);
 
 --
--- Indexes for table `jenis_tempat_tidur`
+-- Indeks untuk tabel `jenis_tempat_tidur`
 --
 ALTER TABLE `jenis_tempat_tidur`
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indexes for table `pendingin_ruangan`
+-- Indeks untuk tabel `pendingin_ruangan`
 --
 ALTER TABLE `pendingin_ruangan`
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indexes for table `status_kamar`
+-- Indeks untuk tabel `status_kamar`
 --
 ALTER TABLE `status_kamar`
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `fleet_kamar`
+-- Ketidakleluasaan untuk tabel `fleet_kamar`
 --
 ALTER TABLE `fleet_kamar`
   ADD CONSTRAINT `fleet_kamar_ibfk_1` FOREIGN KEY (`fk_flk`) REFERENCES `fasilitas_layanan_kesehatan` (`id`);
