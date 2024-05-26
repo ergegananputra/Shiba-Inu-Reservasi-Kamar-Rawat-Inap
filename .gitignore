@@ -3,6 +3,7 @@
 # Ignore Python compiled files
 __pycache__/
 *.py[cod]
+*.pyc
 
 # Ignore virtual environment
 venv/
@@ -21,3 +22,4 @@ venv/
 # Ignore the build directory
 build/
 dist/
+api/v1/__pycache__/fasilitas_layanan_kesehatan.cpython-312.pyc
