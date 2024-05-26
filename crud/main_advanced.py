@@ -43,10 +43,12 @@ def advanced_search(
 
     field_convertion = lambda table, field: f"{__attributes_map[table]}.{field}" if table in __attributes_map else ""
 
-    item_spesific = lambda table, field: f"{field_convertion(table, field)} LIKE :keyword"
+    item_spesific = lambda table, field: f"LOWER({field_convertion(table, field)}) LIKE LOWER(:keyword)"
     where_clause = " OR ".join([item_spesific(*item.split(".")[:2]) for item in fields if item != ""])
 
     select_clause = ", ".join([field_convertion(*item.split(".")[:2]) for item in select if item != ""]) if select != ["*"] else "*"
+
+    order_by_clause = ', '.join(f"{field_convertion(*field.split("."))} {sort}" for field in fields)
 
     sql = text(
         f"""
@@ -56,10 +58,10 @@ def advanced_search(
         JOIN fasilitas_layanan_kesehatan as flk ON fkr.fk_flk = flk.id
         JOIN status_kamar as sk ON k.fk_sk = sk.id
         JOIN jenis_tempat_tidur as jtt ON k.fk_jtt = jtt.id
-        JOIN fasilitas_detail_kamar as fdk ON k.kasur_id = fdk.id
+        JOIN fasilitas_detail_kamar as fdk ON k.fk_fdk = fdk.id
         JOIN pendingin_ruangan as fpr ON fdk.fk_fpr = fpr.id
         WHERE {where_clause}
-        ORDER BY :fields :sort
+        ORDER BY {order_by_clause}
         LIMIT :limit OFFSET :offset
         """
     )
@@ -67,14 +69,20 @@ def advanced_search(
     try:
         result = db.execute(sql, {
             "keyword": f"%{keyword}%",
-            "fields": fields,
-            "sort": sort,
             "limit": limit,
             "offset": (page - 1) * limit
         })
-    except SQLAlchemyError as e:
-        logger.error(f"SQLAlchemyError while executing advanced search: {e}")
-        result = None
-    
 
-    return result.fetchall()
+        
+    except SQLAlchemyError as e:
+        logger.error(f"SQLAlchemyError while executing advanced search: {e} \n\nSQL: {sql}")
+        result = None
+
+        return result
+    
+    column_names = result.keys()
+    rows = result.fetchall()
+
+    dict_rows = [dict(zip(column_names, row)) for row in rows]
+
+    return dict_rows
