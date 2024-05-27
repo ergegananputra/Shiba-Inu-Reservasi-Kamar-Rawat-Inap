@@ -1,8 +1,6 @@
-from typing import Any
 from api.common_bucket import *
-from database.database import get_db_reads, get_db_writes 
+from database.database import get_db_reads 
 from crud import main_advanced as crud
-import json
 
 from schemas import main_advanced as schemas
 
@@ -10,7 +8,27 @@ router = APIRouter()
 
 
 @router.get("/api/v1/advanced", response_model=BaseResponse[List[dict]])
-async def get_all_advanced(skip: int = 0, limit: int = 100, db : Session= Depends(get_db_reads)):
+async def get_all_advanced(
+    skip: int = 0, limit: int = 100, db : Session= Depends(get_db_reads)
+    ) -> BaseResponse[List[dict]]:
+    '''
+    Get All Advanced API Endpoint
+
+    Endpoint ini memungkinkan untuk mendapatkan semua data yang ada pada database.
+    Endpoint ini dapat menerima parameter berupa skip dan limit.
+    - Skip digunakan untuk menentukan data yang akan dilewati.
+    - Limit digunakan untuk menentukan jumlah data yang akan ditampilkan.
+
+    Request Body Example:
+    {
+        "skip" : Int,
+        "limit" : Int,
+    }
+
+    Response Body Example:
+    Hasil akan dikembalikan dalam bentuk JSON. Hasil pencarian akan berada pada key "data".
+    '''
+
     request: schemas.SearchAdvancedRequest = schemas.SearchAdvancedRequest(
         keyword="",
         fields="*",
@@ -48,16 +66,34 @@ async def get_all_advanced(skip: int = 0, limit: int = 100, db : Session= Depend
 async def search_advanced(
         request: schemas.SearchAdvancedRequest,
         db : Session= Depends(get_db_reads)
-        ):
+        ) -> BaseResponse[List[dict]] : 
     '''
-    Request = {
+    Search Advanced API Endpoint
+
+    Endpoint ini memungkinkan untuk melakukan pencarian data dengan lebih spesifik.
+    Endpoin ini dapat menerima parameter berupa keyword, fields, select, limit, page, dan sort.
+    - Keyword digunakan untuk mencari data yang mengandung kata kunci tertentu.
+    - Fields digunakan untuk menentukan field mana saja yang akan dicari.
+    - Select digunakan untuk menentukan field mana saja yang akan ditampilkan.
+    - Limit digunakan untuk menentukan jumlah data yang akan ditampilkan.
+    - Page digunakan untuk menentukan halaman data yang akan ditampilkan.
+    - Sort digunakan untuk menentukan urutan data yang akan ditampilkan.
+
+    Request Body Example:
+    {
         "keyword" : "String",
         "fields" : "String",
         "select" : "String",
-        "limit" : "Int",
-        "page" : "Int",
+        "limit" : Int,
+        "page" : Int,
         "sort" : "String",
     }
+
+    Response Body Example:
+    Response body dapat menjadi beragam bentuk sesuai dengan select yang diberikan.
+    Hasil akan dikembalikan dalam bentuk JSON. Hasil pencarian akan berada pada key "data".
+    Isi dari key data hanya akan berisi data yang sesuai dengan select yang diberikan
+    dan hanya memiliki kedalaman 1 level.
     '''
     keyword : str = request.keyword.lower()
     fields : list[str] = ["*"] if request.fields == "*" else [item for item in "".join(request.fields.lower().split()).split(",") if "." in item]
