@@ -6,19 +6,16 @@ import schemas.fleet_kamar as schemas
 
 def get_fleet_kamar(db: Session, fleet_kamar_id: UUID):
     return db.query(models.FleetKamar) \
-            .filter(models.FleetKamar.id == fleet_kamar_id) \
-            .first()
+        .filter(models.FleetKamar.id == fleet_kamar_id) \
+        .first()
 
-def get_fleet_kamar_by_jenis_kamar(db: Session, jenis_kamar: str):
-    return db.query(models.FleetKamar) \
-            .filter(models.FleetKamar.jenis_kamar == jenis_kamar) \
-            .first()
 
 def get_fleet_kamar_all(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.FleetKamar) \
-            .offset(skip) \
-            .limit(limit) \
-            .all()
+        .offset(skip) \
+        .limit(limit) \
+        .all()
+
 
 def create_fleet_kamar(db: Session, fleet_kamar: schemas.FleetKamarCreate):
     db_fleet_kamar = models.FleetKamar(
@@ -32,10 +29,11 @@ def create_fleet_kamar(db: Session, fleet_kamar: schemas.FleetKamarCreate):
     db.refresh(db_fleet_kamar)
     return db_fleet_kamar
 
+
 def update_fleet_kamar(db: Session, fleet_kamar: models.FleetKamar):
     db_fleet_kamar = db.query(models.FleetKamar) \
-            .filter(models.FleetKamar.id == fleet_kamar.id) \
-            .first()
+        .filter(models.FleetKamar.id == fleet_kamar.id) \
+        .first()
     db_fleet_kamar.fk_flk = fleet_kamar.fk_flk
     db_fleet_kamar.nama = fleet_kamar.nama
     db_fleet_kamar.jenis_kamar = fleet_kamar.jenis_kamar
@@ -44,10 +42,11 @@ def update_fleet_kamar(db: Session, fleet_kamar: models.FleetKamar):
     db.refresh(db_fleet_kamar)
     return db_fleet_kamar
 
+
 def delete_fleet_kamar(db: Session, fleet_kamar_id: UUID):
     db_fleet_kamar = db.query(models.FleetKamar) \
-            .filter(models.FleetKamar.id == fleet_kamar_id) \
-            .first()
+        .filter(models.FleetKamar.id == fleet_kamar_id) \
+        .first()
     db.delete(db_fleet_kamar)
     db.commit()
     return db_fleet_kamar
