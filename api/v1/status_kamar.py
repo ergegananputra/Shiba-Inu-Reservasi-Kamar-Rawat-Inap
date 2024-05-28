@@ -59,6 +59,8 @@ async def create_status_kamar(
             data=room
         )
     
+    room = crud.create_status_kamar(db, room)
+
     response = BaseResponse(
         status="201 Created",
         message="Berhasil menambahkan room status",
@@ -82,6 +84,8 @@ async def update_status_kamar(
         )
     room_status.id = room_status_id
 
+    room_status = crud.update_status_kamar(db, room_status)
+
     response = BaseResponse(
         status="200 OK",
         message="Berhasil mengupdate data room status",
@@ -99,6 +103,8 @@ async def delete_status_kamar(room_status_id: str, db: Session = Depends(get_db_
             message="Data room status tidak ditemukan",
             data=None
         )
+    
+    db_room_status = crud.delete_status_kamar(db, room_status_id)
     
     response = BaseResponse(
         status="200 OK",
