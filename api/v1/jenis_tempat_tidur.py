@@ -46,6 +46,8 @@ async def create_jenis_tempat_tidur(
     ):
     db_room_type = crud.get_jenis_tempat_tidur_by_jenis_tempat_tidur(db, room_type.jenis_tempat_tidur)
 
+    room_type = crud.create_jenis_tempat_tidur(db, room_type)
+
     response = BaseResponse(
         status="201 Created",
         message="Berhasil menambahkan jenis tempat tidur",
@@ -77,6 +79,8 @@ async def update_jenis_tempat_tidur(
     
     room_type.id = room_type_id
 
+    room_type = crud.update_jenis_tempat_tidur(db, room_type)
+
     response = BaseResponse(
         status="200 OK",
         message="Berhasil mengupdate data jenis tempat tidur",
@@ -94,6 +98,8 @@ async def delete_jenis_tempat_tidur(room_type_id: str, db: Session = Depends(get
             message="Data jenis tempat tidur tidak ditemukan",
             data=None
         )
+    
+    crud.delete_jenis_tempat_tidur(db, room_type_id)
     
     response = BaseResponse(
         status="200 OK",

@@ -65,7 +65,9 @@ async def update_fleet_kamar(fleet_kamar_id: str, fleet_kamar: schemas.FleetKama
         return response
     
     fleet_kamar.id = fleet_kamar_id
-    return crud.update_fleet_kamar(db, fleet_kamar)
+    response.data = crud.update_fleet_kamar(db, fleet_kamar)
+
+    return response
 
 @router.delete("/api/v1/fleet/{fleet_id}", response_model=BaseResponse[List[schemas.FleetKamar]])
 async def delete_fleet_kamar(fleet_kamar_id: str, db: Session = Depends(get_db_writes)):
@@ -76,6 +78,8 @@ async def delete_fleet_kamar(fleet_kamar_id: str, db: Session = Depends(get_db_w
             message="Data fleet kamar tidak ditemukan",
             data=None
         )
+    
+    crud.delete_fleet_kamar(db, fleet_kamar_id)
     
     response = BaseResponse(
         status="200 OK",

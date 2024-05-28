@@ -74,6 +74,8 @@ async def update_pendingin_ruangan(
         )
     pendingin.id = pendingin_ruangan_id
 
+    pendingin = crud.update_pendingin_ruangan(db, pendingin)
+
     response = BaseResponse(
         status="200 OK",
         message="Berhasil mengupdate data pendingin ruangan",
@@ -91,6 +93,8 @@ async def delete_pendingin_ruangan(pendingin_ruangan_id: str, db: Session = Depe
             message="Pendingin Ruangan not found",
             data=db_pendingin_ruangan
         )
+    
+    db_pendingin_ruangan = crud.delete_pendingin_ruangan(db, pendingin_ruangan_id)
     
     response = BaseResponse(
         status="200 OK",

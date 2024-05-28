@@ -43,6 +43,9 @@ async def get_kasur(bed_id: str, db: Session= Depends(get_db_reads)):
 
 @router.post("/api/v1/bed/{bed_id}", response_model=BaseResponse[schemas.Kasur])
 async def create_kasur(bed: schemas.Kasur, db: Session = Depends(get_db_writes)):
+
+    bed = crud.create_kasur(db, bed)
+
     response = BaseResponse(
         status="201 Created",
         message="Berhasil menambahkan kasur",
@@ -59,6 +62,8 @@ async def delete_kasur(bed_id: str, db: Session= Depends(get_db_writes)):
             message="Data kasur tidak ditemukan",
             data=db_kasur
         )
+    
+    db_kasur = crud.delete_kasur(db, bed_id)
     
     response = BaseResponse(
         status="200 OK",
@@ -78,6 +83,9 @@ async def update_kasur(bed_id: str, bed: schemas.Kasur, db: Session = Depends(ge
             data=bed
         )
     bed.id = bed_id
+
+    bed = crud.update_kasur(db, bed)
+
     response = BaseResponse(
         status="200 OK",
         message="Berhasil mengupdate data kasur",
