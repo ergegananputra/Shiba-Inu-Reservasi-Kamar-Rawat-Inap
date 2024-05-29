@@ -21,7 +21,7 @@ async def get_fleet_kamar(skip: int = 0, limit: int = 100, db: Session = Depends
     return response
 
 
-@router.get("/api/v1/fleet/{fleet_id}", response_model=BaseResponse[List[schemas.FleetKamar]])
+@router.get("/api/v1/fleet/{fleet_id}", response_model=BaseResponse[schemas.FleetKamar])
 async def get_fleet_kamar(
         fleet_kamar_id: str,
         db: Session = Depends(get_db_reads)

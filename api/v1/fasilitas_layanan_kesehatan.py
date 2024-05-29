@@ -38,7 +38,7 @@ async def get_fasilitas_layanan_kesehatan(
     
     return response
 
-@router.post("/api/v1/facility", response_model=BaseResponse[List[schemas.FasilitasLayananKesehatan]])
+@router.post("/api/v1/facility", response_model=BaseResponse[schemas.FasilitasLayananKesehatan])
 async def create_fasilitas_layanan_kesehatan(
     facility: schemas.FasilitasLayananKesehatanCreate, 
     db: Session = Depends(get_db_writes)
