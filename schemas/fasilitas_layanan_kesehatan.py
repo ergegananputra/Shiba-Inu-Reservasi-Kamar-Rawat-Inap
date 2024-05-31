@@ -3,6 +3,7 @@ from schemas.room_schemas import *
 class FasilitasLayananKesehatanBase(BaseModel, Timestamps):
     nama: str
     alamat: str
+    tipe: str
 
 class FasilitasLayananKesehatanCreate(FasilitasLayananKesehatanBase):
     pass
