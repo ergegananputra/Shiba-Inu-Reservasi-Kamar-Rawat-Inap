@@ -22,8 +22,8 @@ async def get_pendingin_ruangan(skip: int = 0, limit: int = 100, db: Session = D
         {
             "id": str,
             "nama": str,
-            "tipe": str,
-            "lokasi": str
+            "created_at": datetime,
+            "updated_at": datetime
         }
     ]
     Hasil akan dikembalikan dalam bentuk JSON. Hasil pencarian akan berada pada key "data".
@@ -93,8 +93,6 @@ async def create_pendingin_ruangan(pendingin_ruangan: schemas.PendinginRuanganCr
 
     {
         "nama": str,
-        "tipe": str,
-        "lokasi": str
     }
 
 
@@ -103,8 +101,8 @@ async def create_pendingin_ruangan(pendingin_ruangan: schemas.PendinginRuanganCr
     {
         "id": str,
         "nama": str,
-        "tipe": str,
-        "lokasi": str
+        "created_at": datetime,
+        "updated_at": datetime
     }
 
 
@@ -144,8 +142,6 @@ async def update_pendingin_ruangan(
 
     {
         "nama": str,
-        "tipe": str,
-        "lokasi": str
     }
 
 
@@ -154,8 +150,8 @@ async def update_pendingin_ruangan(
     {
         "id": str,
         "nama": str,
-        "tipe": str,
-        "lokasi": str
+        "created_at": datetime,
+        "updated_at": datetime
     }
 
 
@@ -195,8 +191,8 @@ async def delete_pendingin_ruangan(pendingin_ruangan_id: str, db: Session = Depe
     {
         "id": str,
         "nama": str,
-        "tipe": str,
-        "lokasi": str
+        "created_at": datetime,
+        "updated_at": datetime
     }
 
 

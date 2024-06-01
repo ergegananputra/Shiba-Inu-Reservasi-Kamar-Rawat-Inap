@@ -35,7 +35,7 @@ def create_kasur(db: Session, kasur: schemas.KasurCreate):
 
 def update_kasur(db: Session, kasur: models.Kasur):
     db_kasur = db.query(models.Kasur) \
-        .filter(models.Kasur == kasur.id) \
+        .filter(models.Kasur.id == kasur.id) \
         .first()
 
     db_kasur.fk_fkr = kasur.fk_fkr

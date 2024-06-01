@@ -37,7 +37,7 @@ async def get_fleet_kamar(
     return response
 
 
-@router.post("/api/v1/fleet/", response_model=BaseResponse[schemas.FleetKamar])
+@router.post("/api/v1/fleet", response_model=BaseResponse[schemas.FleetKamar])
 async def create_fleet_kamar(
         fleet_kamar: schemas.FleetKamarCreate,
         db: Session = Depends(get_db_writes)
@@ -51,10 +51,10 @@ async def create_fleet_kamar(
     return response
 
 
-@router.put("/api/v1/fleet/{fleet_id}", response_model=BaseResponse[List[schemas.FleetKamar]])
-async def update_fleet_kamar(fleet_kamar_id: str, fleet_kamar: schemas.FleetKamar,
+@router.put("/api/v1/fleet/{fleet_id}", response_model=BaseResponse[schemas.FleetKamar])
+async def update_fleet_kamar(fleet_id: str, fleet_kamar: schemas.FleetKamar,
                              db: Session = Depends(get_db_writes)):
-    db_fleet_kamar = crud.get_fleet_kamar(db, fleet_kamar_id)
+    db_fleet_kamar = crud.get_fleet_kamar(db, fleet_id)
 
     response = BaseResponse(
         status="200 OK",
@@ -67,15 +67,15 @@ async def update_fleet_kamar(fleet_kamar_id: str, fleet_kamar: schemas.FleetKama
         response.message = "Data fleet kamar tidak ditemukan"
         return response
 
-    fleet_kamar.id = fleet_kamar_id
+    fleet_kamar.id = fleet_id
     response.data = crud.update_fleet_kamar(db, fleet_kamar)
 
     return response
 
 
-@router.delete("/api/v1/fleet/{fleet_id}", response_model=BaseResponse[List[schemas.FleetKamar]])
-async def delete_fleet_kamar(fleet_kamar_id: str, db: Session = Depends(get_db_writes)):
-    db_fleet_kamar = crud.get_fleet_kamar(db, fleet_kamar_id)
+@router.delete("/api/v1/fleet/{fleet_id}", response_model=BaseResponse[schemas.FleetKamar])
+async def delete_fleet_kamar(fleet_id: str, db: Session = Depends(get_db_writes)):
+    db_fleet_kamar = crud.get_fleet_kamar(db, fleet_id)
     if db_fleet_kamar is None:
         return BaseResponse(
             status="404 Not Found",
@@ -83,7 +83,7 @@ async def delete_fleet_kamar(fleet_kamar_id: str, db: Session = Depends(get_db_w
             data=None
         )
 
-    crud.delete_fleet_kamar(db, fleet_kamar_id)
+    crud.delete_fleet_kamar(db, fleet_id)
 
     response = BaseResponse(
         status="200 OK",

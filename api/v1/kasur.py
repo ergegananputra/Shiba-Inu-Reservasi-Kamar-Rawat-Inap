@@ -41,7 +41,7 @@ async def get_kasur(bed_id: str, db: Session= Depends(get_db_reads)):
     )
     return response
 
-@router.post("/api/v1/bed/{bed_id}", response_model=BaseResponse[schemas.Kasur])
+@router.post("/api/v1/bed", response_model=BaseResponse[schemas.Kasur])
 async def create_kasur(bed: schemas.Kasur, db: Session = Depends(get_db_writes)):
 
     bed = crud.create_kasur(db, bed)
