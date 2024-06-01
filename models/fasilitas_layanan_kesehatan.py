@@ -7,6 +7,7 @@ class FasilitasLayananKesehatan(DBServerWrites.Base):
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     nama = Column(String, index=True)
     alamat = Column(String, index=True)
+    tipe = Column(String, index=True)
     
     create_at = Column(DateTime, default=func.now())
     update_at = Column(DateTime, default=func.now())

@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: May 26, 2024 at 01:52 PM
--- Server version: 8.0.30
--- PHP Version: 8.1.10
+-- Host: 127.0.0.1
+-- Generation Time: May 31, 2024 at 01:23 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,23 +28,23 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `fasilitas_detail_kamar` (
-  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'uuid()',
-  `fk_fpr` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `tabung_oksigen` int DEFAULT NULL,
-  `kamar_mandi` int DEFAULT NULL,
-  `infus` int DEFAULT NULL,
-  `nurse_call` int DEFAULT NULL,
-  `kasur_pendamping` int DEFAULT NULL,
-  `sofa` int DEFAULT NULL,
-  `lemari` int DEFAULT NULL,
-  `meja_makan_pasien` int DEFAULT NULL,
-  `meja_makan_pendamping` int DEFAULT NULL,
-  `televisi` int DEFAULT NULL,
-  `dispenser` int DEFAULT NULL,
-  `kulkas` int DEFAULT NULL,
-  `wastafel` int DEFAULT NULL,
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id` char(36) NOT NULL DEFAULT 'uuid()',
+  `fk_fpr` char(36) NOT NULL,
+  `tabung_oksigen` int(11) DEFAULT NULL,
+  `kamar_mandi` int(11) DEFAULT NULL,
+  `infus` int(11) DEFAULT NULL,
+  `nurse_call` int(11) DEFAULT NULL,
+  `kasur_pendamping` int(11) DEFAULT NULL,
+  `sofa` int(11) DEFAULT NULL,
+  `lemari` int(11) DEFAULT NULL,
+  `meja_makan_pasien` int(11) DEFAULT NULL,
+  `meja_makan_pendamping` int(11) DEFAULT NULL,
+  `televisi` int(11) DEFAULT NULL,
+  `dispenser` int(11) DEFAULT NULL,
+  `kulkas` int(11) DEFAULT NULL,
+  `wastafel` int(11) DEFAULT NULL,
+  `create_at` timestamp NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -61,19 +61,20 @@ INSERT INTO `fasilitas_detail_kamar` (`id`, `fk_fpr`, `tabung_oksigen`, `kamar_m
 --
 
 CREATE TABLE `fasilitas_layanan_kesehatan` (
-  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `nama` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `alamat` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `nama` varchar(255) DEFAULT NULL,
+  `alamat` varchar(255) DEFAULT NULL,
+  `tipe` varchar(100) DEFAULT NULL,
+  `create_at` timestamp NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `fasilitas_layanan_kesehatan`
 --
 
-INSERT INTO `fasilitas_layanan_kesehatan` (`id`, `nama`, `alamat`, `create_at`, `update_at`) VALUES
-('0e77ed8a440646499be3af447b6c6cf0', 'RS Panti Rapih', 'Jalan Cik Di Tiro No 9', '2024-05-26 12:53:16', '2024-05-26 12:53:16');
+INSERT INTO `fasilitas_layanan_kesehatan` (`id`, `nama`, `alamat`, `tipe`, `create_at`, `update_at`) VALUES
+('0e77ed8a440646499be3af447b6c6cf0', 'RS Panti Rapih', 'Jalan Cik Di Tiro No 9', 'A', '2024-05-26 12:53:16', '2024-05-31 11:22:52');
 
 -- --------------------------------------------------------
 
@@ -82,13 +83,13 @@ INSERT INTO `fasilitas_layanan_kesehatan` (`id`, `nama`, `alamat`, `create_at`, 
 --
 
 CREATE TABLE `fleet_kamar` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `fk_flk` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `jenis_kamar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `informasi_pembayaran` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `fk_flk` char(36) NOT NULL DEFAULT uuid(),
+  `nama` varchar(255) DEFAULT NULL,
+  `jenis_kamar` varchar(255) DEFAULT NULL,
+  `informasi_pembayaran` varchar(255) DEFAULT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -107,11 +108,11 @@ INSERT INTO `fleet_kamar` (`id`, `fk_flk`, `nama`, `jenis_kamar`, `informasi_pem
 --
 
 CREATE TABLE `jenis_tempat_tidur` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `jenis_tempat_tidur` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `keterangan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `jenis_tempat_tidur` varchar(255) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -128,16 +129,16 @@ INSERT INTO `jenis_tempat_tidur` (`id`, `jenis_tempat_tidur`, `keterangan`, `cre
 --
 
 CREATE TABLE `kasur` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `fk_fkr` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `fk_sk` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `fk_jtt` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `fk_fdk` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `tingkat_fasilitas_kesehatan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `fk_fkr` char(36) NOT NULL DEFAULT uuid(),
+  `fk_sk` char(36) NOT NULL DEFAULT uuid(),
+  `fk_jtt` char(36) NOT NULL DEFAULT uuid(),
+  `fk_fdk` char(36) NOT NULL DEFAULT uuid(),
+  `tingkat_fasilitas_kesehatan` varchar(255) DEFAULT NULL,
   `biaya_pakai_per_hari` double DEFAULT NULL,
-  `kode_kamar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `kode_kamar` varchar(255) DEFAULT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -154,10 +155,10 @@ INSERT INTO `kasur` (`id`, `fk_fkr`, `fk_sk`, `fk_jtt`, `fk_fdk`, `tingkat_fasil
 --
 
 CREATE TABLE `pendingin_ruangan` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `nama` varchar(255) DEFAULT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -175,10 +176,10 @@ INSERT INTO `pendingin_ruangan` (`id`, `nama`, `create_at`, `update_at`) VALUES
 --
 
 CREATE TABLE `status_kamar` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT (uuid()),
-  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `status` varchar(255) DEFAULT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -257,22 +258,22 @@ ALTER TABLE `status_kamar`
 -- Constraints for table `fasilitas_detail_kamar`
 --
 ALTER TABLE `fasilitas_detail_kamar`
-  ADD CONSTRAINT `fdk_fk_fpr` FOREIGN KEY (`fk_fpr`) REFERENCES `pendingin_ruangan` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+  ADD CONSTRAINT `fdk_fk_fpr` FOREIGN KEY (`fk_fpr`) REFERENCES `pendingin_ruangan` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `fleet_kamar`
 --
 ALTER TABLE `fleet_kamar`
-  ADD CONSTRAINT `fkr_fk_flk` FOREIGN KEY (`fk_flk`) REFERENCES `fasilitas_layanan_kesehatan` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+  ADD CONSTRAINT `fkr_fk_flk` FOREIGN KEY (`fk_flk`) REFERENCES `fasilitas_layanan_kesehatan` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `kasur`
 --
 ALTER TABLE `kasur`
-  ADD CONSTRAINT `k_fk_fdk` FOREIGN KEY (`fk_fdk`) REFERENCES `fasilitas_detail_kamar` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
-  ADD CONSTRAINT `k_fk_fkr` FOREIGN KEY (`fk_fkr`) REFERENCES `fleet_kamar` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
-  ADD CONSTRAINT `k_fk_jtt` FOREIGN KEY (`fk_jtt`) REFERENCES `jenis_tempat_tidur` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
-  ADD CONSTRAINT `k_fk_sk` FOREIGN KEY (`fk_sk`) REFERENCES `status_kamar` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+  ADD CONSTRAINT `k_fk_fdk` FOREIGN KEY (`fk_fdk`) REFERENCES `fasilitas_detail_kamar` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `k_fk_fkr` FOREIGN KEY (`fk_fkr`) REFERENCES `fleet_kamar` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `k_fk_jtt` FOREIGN KEY (`fk_jtt`) REFERENCES `jenis_tempat_tidur` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `k_fk_sk` FOREIGN KEY (`fk_sk`) REFERENCES `status_kamar` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

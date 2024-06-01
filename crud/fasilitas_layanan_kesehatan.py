@@ -23,7 +23,8 @@ def get_fasilitas_layanan_kesehatan_all(db: Session, skip: int = 0, limit: int =
 def create_fasilitas_layanan_kesehatan(db: Session, fasilitas_layanan_kesehatan: schemas.FasilitasLayananKesehatanCreate):
     db_fasilitas_layanan_kesehatan = models.FasilitasLayananKesehatan(
         nama=fasilitas_layanan_kesehatan.nama,
-        alamat=fasilitas_layanan_kesehatan.alamat
+        alamat=fasilitas_layanan_kesehatan.alamat,
+        tipe=fasilitas_layanan_kesehatan.tipe
     )
     db.add(db_fasilitas_layanan_kesehatan)
     db.commit()
@@ -36,6 +37,7 @@ def update_fasilitas_layanan_kesehatan(db: Session, fasilitas_layanan_kesehatan:
             .first()
     db_fasilitas_layanan_kesehatan.nama = fasilitas_layanan_kesehatan.nama
     db_fasilitas_layanan_kesehatan.alamat = fasilitas_layanan_kesehatan.alamat
+    db_fasilitas_layanan_kesehatan.tipe = fasilitas_layanan_kesehatan.tipe
     db.commit()
     db.refresh(db_fasilitas_layanan_kesehatan)
     return db_fasilitas_layanan_kesehatan
