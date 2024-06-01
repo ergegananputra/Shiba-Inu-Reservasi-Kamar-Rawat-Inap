@@ -24,7 +24,7 @@ async def get_kasur(skip: int = 0, limit: int = 100, db: Session= Depends(get_db
 
     return response
 
-@router.get("/api/v1/bed/{bed_id}", response_model=BaseResponse[List[schemas.Kasur]])
+@router.get("/api/v1/bed/{bed_id}", response_model=BaseResponse[schemas.Kasur])
 async def get_kasur(bed_id: str, db: Session= Depends(get_db_reads)):
     bed = crud.get_kasur(db, bed_id)
     if bed is None:
