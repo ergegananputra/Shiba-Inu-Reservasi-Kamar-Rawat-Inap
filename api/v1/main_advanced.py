@@ -7,6 +7,48 @@ from schemas import main_advanced as schemas
 router = APIRouter()
 
 
+@router.post("/api/v1/advanced/lookup/facilities", response_model=BaseResponse[List[dict]])
+async def get_facility_free_space(
+    keyword: str = "",
+    limit: int = 100,
+    page: int = 1,
+    sort: str = "asc",
+    db : Session= Depends(get_db_reads)
+    ) -> BaseResponse[List[dict]]:
+    '''
+    Get Facility Free Space API Endpoint
+
+    This function retrieves facility free space data based on the provided parameters.
+    
+    Parameters:
+        keyword (str): The keyword to search for in the facility data. Defaults to an empty string.
+        limit (int): The maximum number of results to return. Defaults to 100.
+        page (int): The page number of the results to return. Defaults to 1.
+        sort (str): The sorting order of the results. Can be either "asc" for ascending or "desc" for descending. Defaults to "asc".
+        db (Session): The database session to use for querying the data. Defaults to the result of the get_db_reads function.
+    
+    Returns:
+        BaseResponse[List[dict]]: The response object containing the status, message, and data.
+    '''
+
+    limit = limit if limit > 0 else 100
+    page = page if page > 0 else 1
+    sort = sort.lower() if sort.lower() in ["asc", "desc"] else "asc"
+
+    result = crud.get_facility_free_space(db, keyword, limit, page, sort)
+
+    response = BaseResponse(
+        status="200 OK",
+        message="Data found",
+        data=result
+    )
+
+    if result is None:
+        response.status = "404 Not Found"
+        response.message = "Data not found"
+
+    return response
+
 @router.get("/api/v1/advanced", response_model=BaseResponse[List[dict]])
 async def get_all_advanced(
     skip: int = 0, limit: int = 100, db : Session= Depends(get_db_reads)
@@ -117,8 +159,24 @@ async def search_advanced(
     return response
 
 
-async def search(db: Session, keyword: str, fields: list[str], select: list[str], limit: int, page: int, sort: str) -> List[dict]:
-    result = crud.advanced_search(db, keyword, fields, select, limit, page, sort)
+async def search(
+        db: Session, 
+        keyword: str, 
+        fields: list[str], 
+        select: list[str], 
+        limit: int, 
+        page: int, 
+        sort: str,
+        sam: str = "samv1"
+        ) -> List[dict]:
+    
+    match sam:
+        case "samv1":
+            result = crud.advanced_search(db, keyword, fields, select, limit, page, sort)
+        case "samv2":
+            result = crud.advanced_search_v2(db, keyword, fields, select, limit, page, sort)
+        case _:
+            result = crud.advanced_search(db, keyword, fields, select, limit, page, sort)
 
     if result is None:
         raise HTTPException(status_code=404, detail="Data not found")

@@ -21,6 +21,7 @@ class SearchAdvancedRequest(BaseModel):
     limit: Optional[int] = 100
     page: Optional[int] = 1
     sort: Optional[str] = "asc"
+    sam: Optional[str] = "samv1"
 
 class SearchAdvancedResponse(BaseModel):
     id_kasur : Optional[uuid.UUID] = None
